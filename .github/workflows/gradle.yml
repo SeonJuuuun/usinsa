@@ -30,6 +30,11 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
+    - name: Run MySQL container
+      run: |
+        docker network create my-network || true  # 네트워크가 이미 존재하는 경우 무시
+        docker run --name mysql --network my-network -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=test -d mysql:8
+
     # Docker 이미지 Build
     - name: docker image build
       run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/usinsa .
