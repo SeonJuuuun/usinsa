@@ -1,13 +1,21 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class TestController {
 
-    @GetMapping("/test")
-    public String test() {
-        return "안녕하세요1";
+    private final UserService userService;
+
+    @PostMapping("/users")
+    public ResponseEntity<Long> create(@RequestBody final UserSaveRequest req) {
+        final Long userId = userService.create(req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userId);
     }
 }
