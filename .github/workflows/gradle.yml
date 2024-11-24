@@ -30,6 +30,7 @@ jobs:
     - name: Start MySQL container for Gradle build
       run: |
          sudo docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=test -p 3306:3306 -d mysql:8
+         sleep 30
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
