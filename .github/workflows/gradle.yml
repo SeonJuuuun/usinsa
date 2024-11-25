@@ -20,6 +20,11 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: make application-prod.yml
+      run: |
+        cd ./src/main/resources
+        touch ./application-prod.yml
+        echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
 
     - name: Grant execute permission for Gradlew
       run: chmod +x ./gradlew    
@@ -60,11 +65,8 @@ jobs:
           sudo docker stop usinsa
         fi
 
-    - name: docker run new container with prod profile
-      run: |
-        sudo docker run --rm -it -d -p 80:8080 --name usinsa \
-        -e SPRING_PROFILES_ACTIVE=prod \
-        ${{ secrets.DOCKERHUB_USERNAME }}/usinsa
+    - name: docker run new container
+      run: sudo docker run --rm -it -d -p 80:8080 --name usinsa ${{ secrets.DOCKERHUB_USERNAME }}/usinsa
 
     - name: delete old docker image
       run: sudo docker system prune -f
