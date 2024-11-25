@@ -63,6 +63,7 @@ jobs:
       run: |
         if [ $(sudo docker ps -a -q -f name=usinsa) ]; then
           sudo docker stop usinsa
+          sudo docker rm usinsa
         fi
 
     - name: docker run new container
